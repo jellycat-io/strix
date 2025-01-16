@@ -1,3 +1,5 @@
+// /api/clerk/webhook
+
 import { db } from "@/server/db";
 
 export const POST = async (req: Request) => {
