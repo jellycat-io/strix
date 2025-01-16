@@ -1,21 +1,23 @@
 // /api/aurinko/callback
 
+import axios from "axios";
+import { type NextRequest, NextResponse } from "next/server";
 import { exchangeCodeForAccessToken, getAccountDetails } from "@/lib/aurinko";
 import { db } from "@/server/db";
 import { auth } from "@clerk/nextjs/server";
-import { NextRequest, NextResponse } from "next/server";
+import { waitUntil } from "@vercel/functions";
 
 export const GET = async (req: NextRequest) => {
   const { userId } = await auth();
   if (!userId) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const params = req.nextUrl.searchParams;
   const status = params.get("status");
   if (status !== "success") {
     return NextResponse.json(
-      { message: "Failed to link account" },
+      { error: "Failed to link account" },
       { status: 400 },
     );
   }
@@ -23,16 +25,13 @@ export const GET = async (req: NextRequest) => {
   // Get the code to exchange for the access token
   const code = params.get("code");
   if (!code) {
-    return NextResponse.json(
-      { message: "Node code provided" },
-      { status: 400 },
-    );
+    return NextResponse.json({ error: "Node code provided" }, { status: 400 });
   }
 
   const token = await exchangeCodeForAccessToken(code);
   if (!token) {
     return NextResponse.json(
-      { message: "Failed to exchange code for access token" },
+      { error: "Failed to exchange code for access token" },
       { status: 400 },
     );
   }
@@ -40,7 +39,7 @@ export const GET = async (req: NextRequest) => {
   const account = await getAccountDetails(token.accessToken);
   if (!account) {
     return NextResponse.json(
-      { message: "Failed to get account details" },
+      { error: "Failed to get account details" },
       { status: 400 },
     );
   }
@@ -60,6 +59,17 @@ export const GET = async (req: NextRequest) => {
       accessToken: token.accessToken,
     },
   });
+
+  // Trigger initial sync
+  waitUntil(
+    axios
+      .post(`${process.env.NEXT_PUBLIC_URL}/api/initial-sync`, {
+        accountId: token.accountId.toString(),
+        userId,
+      })
+      .then((res) => console.log("Initial sync triggered:", res.data))
+      .catch((err) => console.error("Failed to trigger initial sync:", err)),
+  );
 
   return NextResponse.redirect(new URL("/mail", req.url));
 };

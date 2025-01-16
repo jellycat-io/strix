@@ -1,6 +1,6 @@
 "use client";
 
-import { CableIcon, Link2Icon } from "lucide-react";
+import { CableIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import { getAurinkoAuthUrl } from "@/lib/aurinko";
 

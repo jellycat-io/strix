@@ -12,7 +12,7 @@ export const getAurinkoAuthUrl = async (
   }
 
   const params = new URLSearchParams({
-    clientId: process.env.AURINKO_CLIENT_ID as string,
+    clientId: process.env.AURINKO_CLIENT_ID!,
     serviceType,
     scopes: "Mail.Read Mail.ReadWrite Mail.Send Mail.Drafts Mail.All",
     responseType: "code",
@@ -29,8 +29,8 @@ export const exchangeCodeForAccessToken = async (code: string) => {
       {},
       {
         auth: {
-          username: process.env.AURINKO_CLIENT_ID as string,
-          password: process.env.AURINKO_CLIENT_SECRET as string,
+          username: process.env.AURINKO_CLIENT_ID!,
+          password: process.env.AURINKO_CLIENT_SECRET!,
         },
       },
     );

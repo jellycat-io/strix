@@ -20,6 +20,8 @@ const config = {
         fixStyle: "inline-type-imports",
       },
     ],
+    "@typescript-eslint/no-base-to-string": "warn",
+    "@typescript-eslint/no-explicit-any": "warn",
     "@typescript-eslint/no-unsafe-argument": "warn",
     "@typescript-eslint/no-unsafe-assignment": "warn",
     "@typescript-eslint/no-unsafe-call": "warn",
