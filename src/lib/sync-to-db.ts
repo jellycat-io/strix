@@ -6,7 +6,7 @@ import type {
   EmailMessage,
 } from "@/types";
 import { db } from "@/server/db";
-import type { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 export async function syncEmailsToDatabase(
   accountId: string,
