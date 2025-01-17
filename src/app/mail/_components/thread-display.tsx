@@ -25,6 +25,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useThreads } from "@/hooks/use-threads";
+import { EmailDisplay } from "./email-display";
 
 interface ThreadTool {
   label: string;
@@ -117,11 +118,7 @@ export function ThreadDisplay() {
           <Separator />
           <div className="flex max-h-[calc(100vh-500px)] flex-col overflow-scroll">
             <div className="flex flex-col gap-4 p-6">
-              {thread?.emails.map((email) => (
-                <div key={email.id} className="w-full">
-                  {email.body}
-                </div>
-              ))}
+              {thread?.emails.map((email) => <EmailDisplay email={email} />)}
             </div>
           </div>
           <div className="flex-1"></div>
