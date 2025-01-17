@@ -1,5 +1,6 @@
-import type { EmailMessage, SyncResponse, SyncUpdatedResponse } from "@/types";
 import axios from "axios";
+
+import type { EmailMessage, SyncResponse, SyncUpdatedResponse } from "@/types";
 
 export class Account {
   private token: string;

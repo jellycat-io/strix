@@ -2,10 +2,11 @@
 
 import axios from "axios";
 import { type NextRequest, NextResponse } from "next/server";
-import { exchangeCodeForAccessToken, getAccountDetails } from "@/lib/aurinko";
-import { db } from "@/server/db";
 import { auth } from "@clerk/nextjs/server";
 import { waitUntil } from "@vercel/functions";
+
+import { exchangeCodeForAccessToken, getAccountDetails } from "@/lib/aurinko";
+import { db } from "@/server/db";
 
 export const GET = async (req: NextRequest) => {
   const { userId } = await auth();

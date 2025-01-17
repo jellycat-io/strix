@@ -1,3 +1,5 @@
+import { MailDashboard } from "./_components/mail-dashboard";
+
 export default async function MailPage() {
-  return <h1>Mail</h1>;
+  return <MailDashboard navCollapsedSize={4} />;
 }

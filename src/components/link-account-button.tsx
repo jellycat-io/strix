@@ -1,7 +1,8 @@
 "use client";
 
 import { CableIcon } from "lucide-react";
-import { Button } from "./ui/button";
+
+import { Button } from "@/components/ui/button";
 import { getAurinkoAuthUrl } from "@/lib/aurinko";
 
 export const LinkAccountButton = () => {
