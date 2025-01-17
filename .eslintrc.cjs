@@ -22,6 +22,7 @@ const config = {
       },
     ],
     "@typescript-eslint/no-base-to-string": "warn",
+    "@typescript-eslint/no-empty-function": "warn",
     "@typescript-eslint/no-explicit-any": "warn",
     "@typescript-eslint/no-unsafe-argument": "warn",
     "@typescript-eslint/no-unsafe-assignment": "warn",

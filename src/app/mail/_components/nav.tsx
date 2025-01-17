@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/tooltip";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { cn } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface NavProps {
   isCollapsed: boolean;
@@ -18,6 +19,7 @@ interface NavProps {
     label?: string;
     icon: LucideIcon;
     variant: "default" | "ghost";
+    isLoading: boolean;
   }[];
 }
 
@@ -57,7 +59,7 @@ export function Nav({ isCollapsed, links }: NavProps) {
               </TooltipContent>
             </Tooltip>
           ) : (
-            <span
+            <div
               key={`tab-${index}`}
               className={cn(
                 buttonVariants({ variant: link.variant, size: "sm" }),
@@ -69,18 +71,24 @@ export function Nav({ isCollapsed, links }: NavProps) {
             >
               <link.icon className="mr-2 size-4" />
               {link.title}
-              {link.label && (
-                <span
-                  className={cn(
-                    "ml-auto",
-                    link.variant === "default" &&
-                      "text-background dark:text-white",
+              {link.isLoading ? (
+                <Skeleton className="ml-auto size-4" />
+              ) : (
+                <>
+                  {link.label && (
+                    <span
+                      className={cn(
+                        "ml-auto",
+                        link.variant === "default" &&
+                          "text-background dark:text-white",
+                      )}
+                    >
+                      {link.label}
+                    </span>
                   )}
-                >
-                  {link.label}
-                </span>
+                </>
               )}
-            </span>
+            </div>
           ),
         )}
       </nav>

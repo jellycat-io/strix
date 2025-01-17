@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { AccountSwitcher } from "./account-switcher";
 import { Sidebar } from "./sidebar";
 import { ThreadList } from "./thread-list";
+import { ThreadDisplay } from "./thread-display";
 
 interface MailProps {
   navCollapsedSize: number;
@@ -99,7 +100,7 @@ export function MailDashboard({
       </ResizablePanel>
       <ResizableHandle withHandle />
       <ResizablePanel defaultSize={defaultLayout[2]} minSize={30}>
-        Thread Display
+        <ThreadDisplay />
       </ResizablePanel>
     </ResizablePanelGroup>
   );

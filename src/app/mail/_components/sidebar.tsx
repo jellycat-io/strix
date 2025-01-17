@@ -16,18 +16,21 @@ export function Sidebar({ isCollapsed }: SidebarProps) {
     "inbox",
   );
 
-  const { data: inboxCount } = api.mail.getThreadCount.useQuery({
-    accountId,
-    tab: "inbox",
-  });
-  const { data: draftCount } = api.mail.getThreadCount.useQuery({
-    accountId,
-    tab: "drafts",
-  });
-  const { data: sentCount } = api.mail.getThreadCount.useQuery({
-    accountId,
-    tab: "sent",
-  });
+  const { data: inboxCount, isFetching: isInboxCountFetching } =
+    api.mail.getThreadCount.useQuery({
+      accountId,
+      tab: "inbox",
+    });
+  const { data: draftCount, isFetching: isDraftCountFetching } =
+    api.mail.getThreadCount.useQuery({
+      accountId,
+      tab: "drafts",
+    });
+  const { data: sentCount, isFetching: isSentCountFetching } =
+    api.mail.getThreadCount.useQuery({
+      accountId,
+      tab: "sent",
+    });
 
   return (
     <Nav
@@ -38,18 +41,21 @@ export function Sidebar({ isCollapsed }: SidebarProps) {
           label: inboxCount?.toString() ?? "?",
           icon: InboxIcon,
           variant: tab === "inbox" ? "default" : "ghost",
+          isLoading: isInboxCountFetching,
         },
         {
           title: "Drafts",
           label: draftCount?.toString() ?? "?",
           icon: FileIcon,
           variant: tab === "drafts" ? "default" : "ghost",
+          isLoading: isDraftCountFetching,
         },
         {
           title: "Sent",
           label: sentCount?.toString() ?? "?",
           icon: SendIcon,
           variant: tab === "sent" ? "default" : "ghost",
+          isLoading: isSentCountFetching,
         },
       ]}
     />

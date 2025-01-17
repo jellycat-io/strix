@@ -5,5 +5,5 @@ export default async function MailLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <TooltipProvider delayDuration={0}>{children}</TooltipProvider>;
+  return <TooltipProvider>{children}</TooltipProvider>;
 }
