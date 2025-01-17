@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { AccountSwitcher } from "./account-switcher";
 import { Sidebar } from "./sidebar";
+import { ThreadList } from "./thread-list";
 
 interface MailProps {
   navCollapsedSize: number;
@@ -88,8 +89,12 @@ export function MailDashboard({
           <Separator />
           {/* Search bar */}
           Search Bar
-          <TabsContent value="inbox">Inbox content</TabsContent>
-          <TabsContent value="done">Done content</TabsContent>
+          <TabsContent value="inbox">
+            <ThreadList />
+          </TabsContent>
+          <TabsContent value="done">
+            <ThreadList />
+          </TabsContent>
         </Tabs>
       </ResizablePanel>
       <ResizableHandle withHandle />

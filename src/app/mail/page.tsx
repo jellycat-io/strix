@@ -5,5 +5,9 @@ const MailDashboard = dynamic(() =>
 );
 
 export default async function MailPage() {
-  return <MailDashboard navCollapsedSize={2} />;
+  return (
+    <div className="hidden h-screen flex-col overflow-scroll md:flex">
+      <MailDashboard navCollapsedSize={2} />
+    </div>
+  );
 }
