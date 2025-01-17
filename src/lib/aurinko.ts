@@ -1,6 +1,6 @@
 "use server";
 
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 import { auth } from "@clerk/nextjs/server";
 
 export const getAurinkoAuthUrl = async (
@@ -42,7 +42,7 @@ export const exchangeCodeForAccessToken = async (code: string) => {
       userSession: string;
     };
   } catch (err) {
-    if (axios.isAxiosError(err)) {
+    if (isAxiosError(err)) {
       console.error(
         err.response?.data.error ||
           `Failed to exchange code for access token: ${err}`,
@@ -65,7 +65,7 @@ export const getAccountDetails = async (token: string) => {
       name: string;
     };
   } catch (err) {
-    if (axios.isAxiosError(err)) {
+    if (isAxiosError(err)) {
       console.error(
         err.response?.data.error || `Failed to get account details: ${err}`,
       );

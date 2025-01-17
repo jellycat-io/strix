@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 
 import type { EmailMessage, SyncResponse, SyncUpdatedResponse } from "@/types";
 
@@ -50,7 +50,7 @@ export class Account {
         deltaToken: storedDeltaToken,
       };
     } catch (err) {
-      if (axios.isAxiosError(err)) {
+      if (isAxiosError(err)) {
         console.error(
           "Error during sync:",
           JSON.stringify(err.response?.data, null, 2),

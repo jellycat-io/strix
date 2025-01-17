@@ -10,6 +10,8 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
+import { AccountSwitcher } from "./account-switcher";
+import { Sidebar } from "./sidebar";
 
 interface MailProps {
   navCollapsedSize: number;
@@ -19,7 +21,7 @@ interface MailProps {
 
 export function MailDashboard({
   navCollapsedSize,
-  defaultLayout = [20, 32, 48],
+  defaultLayout = [10, 32, 58],
   defaultCollapsed = false,
 }: MailProps) {
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
@@ -28,7 +30,7 @@ export function MailDashboard({
     <ResizablePanelGroup
       direction="horizontal"
       onLayout={(sizes: number[]) => {
-        console.log(sizes);
+        document.cookie = `react-resizable-panels:layout:mail=${JSON.stringify(sizes)}`;
       }}
       className="h-full min-h-screen items-stretch"
     >
@@ -36,29 +38,29 @@ export function MailDashboard({
         defaultSize={defaultLayout[0]}
         collapsedSize={navCollapsedSize}
         collapsible={true}
-        minSize={15}
+        minSize={10}
         maxSize={40}
-        onCollapse={() => setIsCollapsed(true)}
+        onCollapse={() => {
+          setIsCollapsed(true);
+          document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(true)}`;
+        }}
         onResize={() => {
           setIsCollapsed(false);
+          document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(false)}`;
         }}
         className={cn(
           isCollapsed && "min-w-[50px] transition-all duration-300 ease-in-out",
         )}
       >
         <div className="flex h-full flex-1 flex-col">
-          {/* Account Switcher */}
-          <div
-            className={cn(
-              "flex h-[52px] items-center justify-between",
-              isCollapsed ? "h-[52px]" : "px-2",
-            )}
-          >
-            Account Switcher
+          <div className={cn("flex h-[52px] items-center justify-center px-2")}>
+            <AccountSwitcher isCollapsed={isCollapsed} />
           </div>
           <Separator />
           {/* Sidebar */}
-          <div className="flex-1"></div>
+          <div className="flex-1">
+            <Sidebar isCollapsed={isCollapsed} />
+          </div>
           {/* AI */}
           Ask AI
         </div>
