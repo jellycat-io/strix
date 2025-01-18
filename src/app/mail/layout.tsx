@@ -1,3 +1,4 @@
+import { KBar } from "@/components/kbar";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 export default async function MailLayout({
@@ -5,5 +6,9 @@ export default async function MailLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <TooltipProvider>{children}</TooltipProvider>;
+  return (
+    <KBar>
+      <TooltipProvider>{children}</TooltipProvider>
+    </KBar>
+  );
 }

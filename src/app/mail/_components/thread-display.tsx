@@ -118,7 +118,9 @@ export function ThreadDisplay() {
           <Separator />
           <div className="flex max-h-[calc(100vh-500px)] flex-col overflow-scroll">
             <div className="flex flex-col gap-4 p-6">
-              {thread?.emails.map((email) => <EmailDisplay email={email} />)}
+              {thread?.emails.map((email) => (
+                <EmailDisplay key={email.id} email={email} />
+              ))}
             </div>
           </div>
           <div className="flex-1"></div>
