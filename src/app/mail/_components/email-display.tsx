@@ -1,12 +1,12 @@
 "use client";
 
 import { formatDistanceToNow } from "date-fns";
-import Avatar from "react-avatar";
 import { Letter } from "react-letter";
 
 import { useThreads } from "@/hooks/use-threads";
-import { cn } from "@/lib/utils";
+import { cn, getInitials } from "@/lib/utils";
 import { type RouterOutputs } from "@/trpc/react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface EmailDisplayProps {
   email: RouterOutputs["mail"]["getThreads"][0]["emails"][0];
@@ -27,13 +27,14 @@ export function EmailDisplay({ email }: EmailDisplayProps) {
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center justify-between gap-2">
           {!isMe && (
-            <Avatar
-              name={email.from.name ?? email.from.address}
-              email={email.from.address}
-              size="35"
-              textSizeRatio={2}
-              round
-            />
+            <div className="text-sm">
+              <Avatar>
+                <AvatarImage alt={email.from.name ?? email.from.address} />
+                <AvatarFallback>
+                  {email.from.name ? getInitials(email.from.name) : "@"}
+                </AvatarFallback>
+              </Avatar>
+            </div>
           )}
           <span className="font-medium">
             {isMe ? "Me" : (email.from.name ?? email.from.address)}

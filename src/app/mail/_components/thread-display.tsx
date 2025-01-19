@@ -26,6 +26,8 @@ import {
 } from "@/components/ui/tooltip";
 import { useThreads } from "@/hooks/use-threads";
 import { EmailDisplay } from "./email-display";
+import { ReplyBox } from "./reply-box";
+import { getInitials } from "@/lib/utils";
 
 interface ThreadTool {
   label: string;
@@ -90,15 +92,14 @@ export function ThreadDisplay() {
                 <AvatarImage alt="avatar" />
                 <AvatarFallback>
                   {thread?.emails[0]?.from.name
-                    ?.split(" ")
-                    .slice(0, 2)
-                    .map((w) => w.charAt(0))
-                    .join("")}
+                    ? getInitials(thread.emails[0]?.from.name)
+                    : "@"}
                 </AvatarFallback>
               </Avatar>
               <div className="grid gap-1">
                 <div className="flex flex-col gap-1 font-semibold">
-                  {thread?.emails[0]?.from.name}{" "}
+                  {thread?.emails[0]?.from.name ??
+                    thread?.emails[0]?.from.address}
                   <div className="line-clamp-1 text-xs">
                     {thread?.emails[0]?.subject}
                   </div>
@@ -125,8 +126,7 @@ export function ThreadDisplay() {
           </div>
           <div className="flex-1"></div>
           <Separator className="mt-auto" />
-          {/* TODO: Reply Box */}
-          <div className="p-4">Reply Box</div>
+          <ReplyBox />
         </div>
       ) : (
         <div className="flex h-full w-full items-center justify-center text-muted-foreground">

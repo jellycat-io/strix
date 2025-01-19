@@ -1,3 +1,5 @@
+"use client";
+
 import { type Action, useRegisterActions } from "kbar";
 import { useTheme } from "next-themes";
 
