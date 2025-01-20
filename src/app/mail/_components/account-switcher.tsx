@@ -1,5 +1,11 @@
 "use client";
 
+import { api } from "@/trpc/react";
+import { PlusIcon } from "lucide-react";
+
+import { getAurinkoAuthUrl } from "@/lib/aurinko";
+import { cn } from "@/lib/utils";
+import { useLocalStorage } from "@/hooks/use-local-storage";
 import {
   Select,
   SelectContent,
@@ -8,11 +14,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useLocalStorage } from "@/hooks/use-local-storage";
-import { getAurinkoAuthUrl } from "@/lib/aurinko";
-import { cn } from "@/lib/utils";
-import { api } from "@/trpc/react";
-import { PlusIcon } from "lucide-react";
 
 interface AccountSwitcherProps {
   isCollapsed: boolean;

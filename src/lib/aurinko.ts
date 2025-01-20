@@ -1,7 +1,7 @@
 "use server";
 
-import axios, { isAxiosError } from "axios";
 import { auth } from "@clerk/nextjs/server";
+import axios, { isAxiosError } from "axios";
 
 export const getAurinkoAuthUrl = async (
   serviceType: "Google" | "Office365",

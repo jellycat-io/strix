@@ -2,14 +2,16 @@
 
 import { format } from "date-fns";
 import {
-  type LucideIcon,
   ArchiveIcon,
   ArchiveXIcon,
   ClockIcon,
   MoreVerticalIcon,
   Trash2Icon,
+  type LucideIcon,
 } from "lucide-react";
 
+import { getInitials } from "@/lib/utils";
+import { useThreads } from "@/hooks/use-threads";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -24,10 +26,9 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useThreads } from "@/hooks/use-threads";
+
 import { EmailDisplay } from "./email-display";
 import { ReplyBox } from "./reply-box";
-import { getInitials } from "@/lib/utils";
 
 interface ThreadTool {
   label: string;

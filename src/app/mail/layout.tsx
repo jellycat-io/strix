@@ -1,5 +1,5 @@
-import { KBar } from "@/components/kbar";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { KBar } from "@/components/kbar";
 
 export default async function MailLayout({
   children,

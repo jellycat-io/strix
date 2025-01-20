@@ -1,6 +1,6 @@
 "use client";
 
-import { type Action, useRegisterActions } from "kbar";
+import { useRegisterActions, type Action } from "kbar";
 import { useTheme } from "next-themes";
 
 export function useThemeSwitching() {

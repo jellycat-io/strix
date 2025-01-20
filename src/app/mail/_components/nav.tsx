@@ -2,15 +2,15 @@
 
 import { type LucideIcon } from "lucide-react";
 
+import { cn } from "@/lib/utils";
+import { useLocalStorage } from "@/hooks/use-local-storage";
 import { buttonVariants } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useLocalStorage } from "@/hooks/use-local-storage";
-import { cn } from "@/lib/utils";
-import { Skeleton } from "@/components/ui/skeleton";
 
 interface NavProps {
   isCollapsed: boolean;

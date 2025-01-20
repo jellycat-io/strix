@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import { type Editor, EditorContent, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
+import { useEffect, useState } from "react";
+
+import { api } from "@/trpc/react";
 import Text from "@tiptap/extension-text";
-import { Button } from "@/components/ui/button";
+import { EditorContent, useEditor, type Editor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import { readStreamableValue } from "ai/rsc";
 import {
   BoldIcon,
   CodeIcon,
@@ -15,20 +17,23 @@ import {
   ListIcon,
   ListOrderedIcon,
   Loader2Icon,
-  LucideIcon,
   QuoteIcon,
   RedoIcon,
   SendIcon,
   StrikethroughIcon,
   UndoIcon,
 } from "lucide-react";
+
 import { cn } from "@/lib/utils";
-import { Separator } from "@/components/ui/separator";
-import { Label } from "@/components/ui/label";
-import { MultiSelect, SelectOption } from "@/components/multi-select";
-import { api } from "@/trpc/react";
 import { useThreads } from "@/hooks/use-threads";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import { MultiSelect, SelectOption } from "@/components/multi-select";
+
+import { generate } from "../action";
+import { AIComposeButton } from "./ai-compose-button";
 
 interface EmailEditorProps {
   subject: string;
@@ -61,15 +66,16 @@ export function EmailEditor({
 }: EmailEditorProps) {
   const [value, setValue] = useState("");
   const [isExpanded, setIsExpanded] = useState(isDefaultExpanded);
+  const [token, setToken] = useState("");
 
   const { accountId } = useThreads();
   const { data: suggestions } = api.mail.getSuggestions.useQuery({ accountId });
 
-  const CustomText = Text.configure({
+  const CustomText = Text.extend({
     addKeyboardShortcuts() {
       return {
-        "Meta-.": () => {
-          console.log("Meta-.");
+        "Mod-.": () => {
+          autoComplete(this.editor.getText());
           return true;
         },
       };
@@ -79,12 +85,7 @@ export function EmailEditor({
   const editor = useEditor({
     autofocus: false,
     immediatelyRender: false,
-    extensions: [
-      StarterKit.configure({
-        text: false,
-      }),
-      CustomText,
-    ],
+    extensions: [StarterKit, CustomText],
     onUpdate: ({ editor }) => {
       setValue(editor.getHTML());
     },
@@ -95,6 +96,24 @@ export function EmailEditor({
       label: s.name ?? s.address,
       value: s.address,
     })) ?? [];
+
+  useEffect(() => {
+    editor?.commands.insertContent(token);
+  }, [editor, token]);
+
+  async function autoComplete(input: string) {
+    const { output } = await generate(input);
+
+    for await (const token of readStreamableValue(output)) {
+      if (token) {
+        setToken(token);
+      }
+    }
+  }
+
+  function onGenerateEmail(token: string) {
+    editor?.commands.insertContent(token);
+  }
 
   if (!editor) return null;
 
@@ -140,16 +159,18 @@ export function EmailEditor({
             </div>
           </>
         )}
-        <div className="flex items-center gap-2">
-          <Button
-            variant="ghost"
-            className="gap-1"
-            onClick={() => setIsExpanded(!isExpanded)}
-          >
-            <span className="font-medium text-green-600">Draft&nbsp;</span>
-            <span>to</span>
-            <span>{to.join(", ")}</span>
+        <div className="flex items-center gap-1">
+          <Button variant="ghost" onClick={() => setIsExpanded(!isExpanded)}>
+            <div className="flex items-center gap-1">
+              <span className="font-medium text-green-600">Draft&nbsp;</span>
+              <span>to</span>
+              <span>{to.join(", ")}</span>
+            </div>
           </Button>
+          <AIComposeButton
+            isComposing={isDefaultExpanded}
+            onGenerate={onGenerateEmail}
+          />
         </div>
       </div>
       <div className="prose w-full p-4">

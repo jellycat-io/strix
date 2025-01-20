@@ -1,9 +1,12 @@
 "use client";
 
-import { api, RouterOutputs } from "@/trpc/react";
-import { EmailEditor } from "./email-editor";
-import { useThreads } from "@/hooks/use-threads";
 import { useEffect, useState } from "react";
+
+import { api, RouterOutputs } from "@/trpc/react";
+
+import { useThreads } from "@/hooks/use-threads";
+
+import { EmailEditor } from "./email-editor";
 
 export function ReplyBox() {
   const { accountId, threadId } = useThreads();

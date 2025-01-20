@@ -1,7 +1,8 @@
-import { Icons } from "@/components/icons";
+import Link from "next/link";
+
 // import { LinkAccountButton } from "@/components/link-account-button";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { Icons } from "@/components/icons";
 
 export default async function Home() {
   return (

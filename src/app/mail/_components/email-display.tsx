@@ -1,11 +1,11 @@
 "use client";
 
+import { type RouterOutputs } from "@/trpc/react";
 import { formatDistanceToNow } from "date-fns";
 import { Letter } from "react-letter";
 
-import { useThreads } from "@/hooks/use-threads";
 import { cn, getInitials } from "@/lib/utils";
-import { type RouterOutputs } from "@/trpc/react";
+import { useThreads } from "@/hooks/use-threads";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface EmailDisplayProps {

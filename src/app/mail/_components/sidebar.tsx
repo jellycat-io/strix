@@ -1,9 +1,11 @@
 "use client";
 
-import { useLocalStorage } from "@/hooks/use-local-storage";
-import { Nav } from "./nav";
-import { FileIcon, InboxIcon, SendIcon } from "lucide-react";
 import { api } from "@/trpc/react";
+import { FileIcon, InboxIcon, SendIcon } from "lucide-react";
+
+import { useLocalStorage } from "@/hooks/use-local-storage";
+
+import { Nav } from "./nav";
 
 interface SidebarProps {
   isCollapsed: boolean;

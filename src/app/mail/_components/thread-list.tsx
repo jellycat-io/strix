@@ -1,12 +1,13 @@
 "use client";
 
+import { Fragment, type ComponentProps } from "react";
+
 import { format, formatDistanceToNow } from "date-fns";
 import DomPurify from "dompurify";
-import { type ComponentProps, Fragment } from "react";
 
-import { Badge } from "@/components/ui/badge";
-import { useThreads } from "@/hooks/use-threads";
 import { cn } from "@/lib/utils";
+import { useThreads } from "@/hooks/use-threads";
+import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export function ThreadList() {

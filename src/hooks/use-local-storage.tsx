@@ -1,9 +1,9 @@
 import {
-  type Dispatch,
-  type SetStateAction,
   useCallback,
   useEffect,
   useState,
+  type Dispatch,
+  type SetStateAction,
 } from "react";
 
 import { useEventCallback } from "./use-event-callback";

@@ -1,7 +1,8 @@
-import { z } from "zod";
-import { createTRPCRouter, privateProcedure } from "../trpc";
 import { db } from "@/server/db";
 import type { Prisma } from "@prisma/client";
+import { z } from "zod";
+
+import { createTRPCRouter, privateProcedure } from "../trpc";
 
 const Tab = z.enum(["inbox", "drafts", "sent"]);
 

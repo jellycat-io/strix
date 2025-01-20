@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
+
+import { Check, ChevronsUpDown, XIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -18,7 +20,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Badge } from "@/components/ui/badge";
 
 export type SelectOption = {
   label: string;
@@ -47,7 +48,7 @@ export function MultiSelect({
     }
   }, [defaultValue]);
 
-  const handleSetValue = (val: SelectOption) => {
+  function handleSetValue(val: SelectOption) {
     if (value.includes(val)) {
       value.splice(value.indexOf(val), 1);
       setValue(value.filter((item) => item !== val));
@@ -56,7 +57,11 @@ export function MultiSelect({
       setValue((prevValue) => [...prevValue, val]);
       onChangeAction(value);
     }
-  };
+  }
+
+  function handleRemoveFromValue(option: SelectOption) {
+    setValue((prev) => prev.filter((i) => i.value !== option.value));
+  }
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -70,7 +75,14 @@ export function MultiSelect({
           <div className="flex justify-start gap-2">
             {value?.length
               ? value.map((val, i) => (
-                  <Badge key={i} className="bg-primary">
+                  <Badge
+                    key={i}
+                    className="flex items-center justify-between gap-2 bg-primary"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleRemoveFromValue(val);
+                    }}
+                  >
                     {
                       options.find((option) => option.value === val.value)
                         ?.label
@@ -82,7 +94,7 @@ export function MultiSelect({
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[480px] p-0">
+      <PopoverContent className="w-[480px] p-0" align="start">
         <Command>
           <CommandInput placeholder="Search..." />
           <CommandEmpty>No option found.</CommandEmpty>

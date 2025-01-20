@@ -1,6 +1,4 @@
 // import pLimit from "p-limit";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-
 import { db } from "@/server/db";
 import type {
   EmailAddress,
@@ -8,6 +6,7 @@ import type {
   EmailLabel,
   EmailMessage,
 } from "@/types";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 export async function syncEmailsToDatabase(
   accountId: string,

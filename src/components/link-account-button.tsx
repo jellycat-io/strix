@@ -2,8 +2,8 @@
 
 import { CableIcon } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import { getAurinkoAuthUrl } from "@/lib/aurinko";
+import { Button } from "@/components/ui/button";
 
 export const LinkAccountButton = () => {
   return (

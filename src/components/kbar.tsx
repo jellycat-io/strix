@@ -1,10 +1,9 @@
 "use client";
 
+import { forwardRef, Fragment, useMemo, type Ref } from "react";
+
 import { motion } from "framer-motion";
 import {
-  type Action,
-  type ActionId,
-  type ActionImpl,
   KBarAnimator,
   KBarPortal,
   KBarPositioner,
@@ -12,8 +11,10 @@ import {
   KBarResults,
   KBarSearch,
   useMatches,
+  type Action,
+  type ActionId,
+  type ActionImpl,
 } from "kbar";
-import { forwardRef, Fragment, type Ref, useMemo } from "react";
 
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { useThemeSwitching } from "@/hooks/use-theme-switching";

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import { cn } from "@/lib/utils";
 import {
   ResizableHandle,
   ResizablePanel,
@@ -9,11 +10,11 @@ import {
 } from "@/components/ui/resizable";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { cn } from "@/lib/utils";
+
 import { AccountSwitcher } from "./account-switcher";
 import { Sidebar } from "./sidebar";
-import { ThreadList } from "./thread-list";
 import { ThreadDisplay } from "./thread-display";
+import { ThreadList } from "./thread-list";
 
 interface MailProps {
   navCollapsedSize: number;

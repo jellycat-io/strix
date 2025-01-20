@@ -1,8 +1,8 @@
 "use client";
 
+import { api } from "@/trpc/react";
 import { atom, useAtom } from "jotai";
 
-import { api } from "@/trpc/react";
 import { useLocalStorage } from "./use-local-storage";
 
 export const threadIdAtom = atom<string | null>(null);
