@@ -85,7 +85,7 @@ export function ThreadDisplay() {
         </DropdownMenu>
       </div>
       <Separator />
-      {threadId ? (
+      {thread ? (
         <div className="flex flex-1 flex-col overflow-scroll">
           <div className="flex items-center p-4">
             <div className="flex items-center gap-4 text-sm">
