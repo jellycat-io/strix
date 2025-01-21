@@ -2,8 +2,11 @@
 
 import { useState } from "react";
 
+import { api } from "@/trpc/react";
 import { SendIcon, SquarePenIcon } from "lucide-react";
+import { toast } from "sonner";
 
+import { useThreads } from "@/hooks/use-threads";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
@@ -20,6 +23,7 @@ import { SelectOption } from "@/components/multi-select";
 import { EmailEditor } from "./email-editor";
 
 export function ComposeButton() {
+  const [open, setOpen] = useState(false);
   const [formState, setFormState] = useState<{
     subject: string;
     toValues: SelectOption[];
@@ -31,6 +35,9 @@ export function ComposeButton() {
     ccValues: [],
     bccValues: [],
   });
+
+  const { account } = useThreads();
+  const sendEmail = api.mail.sendEmail.useMutation();
 
   function onSubjectChange(value: string) {
     setFormState({
@@ -60,12 +67,39 @@ export function ComposeButton() {
     });
   }
 
-  async function handleSend(value: string) {
-    console.log(value);
+  function handleSend(value: string) {
+    if (!account) return;
+
+    sendEmail.mutate(
+      {
+        accountId: account.id,
+        email: {
+          threadId: undefined,
+          subject: formState.subject,
+          body: value,
+          from: { name: account.name ?? "Me", address: account.email },
+          to: formState.toValues.map(toEmailAddress),
+          cc: formState.ccValues.map(toEmailAddress),
+          bcc: formState.bccValues.map(toEmailAddress),
+          replyTo: { name: account.name ?? "Me", address: account.email },
+          inReplyTo: undefined,
+        },
+      },
+      {
+        onSuccess: () => {
+          setOpen(false);
+          toast.success("Email sent");
+        },
+        onError: (err) => {
+          console.log(err);
+          toast.error("Error sending email");
+        },
+      },
+    );
   }
 
   return (
-    <Drawer>
+    <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button>
           <SquarePenIcon className="size-4" />
@@ -84,7 +118,7 @@ export function ComposeButton() {
             ccValues={formState.ccValues}
             bccValues={formState.bccValues}
             isDefaultExpanded
-            isSending={false}
+            isSending={sendEmail.isPending}
             setSubject={onSubjectChange}
             setToValues={onToValuesChange}
             setCcValues={onCcValuesChange}
@@ -95,4 +129,11 @@ export function ComposeButton() {
       </DrawerContent>
     </Drawer>
   );
+}
+
+function toEmailAddress({ value }: SelectOption) {
+  return {
+    name: value,
+    address: value,
+  };
 }

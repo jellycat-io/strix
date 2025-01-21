@@ -41,6 +41,7 @@ export function MultiSelect({
 }: MultiSelectProps) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState<SelectOption[]>([]);
+  const [input, setInput] = useState("");
 
   useEffect(() => {
     if (value !== defaultValue) {
@@ -84,8 +85,9 @@ export function MultiSelect({
                     }}
                   >
                     {
-                      options.find((option) => option.value === val.value)
-                        ?.label
+                      options
+                        .concat({ label: input, value: input })
+                        .find((option) => option.value === val.value)?.label
                     }
                   </Badge>
                 ))
@@ -96,11 +98,15 @@ export function MultiSelect({
       </PopoverTrigger>
       <PopoverContent className="w-[480px] p-0" align="start">
         <Command>
-          <CommandInput placeholder="Search..." />
+          <CommandInput
+            placeholder="Search..."
+            value={input}
+            onValueChange={(value) => setInput(value)}
+          />
           <CommandEmpty>No option found.</CommandEmpty>
           <CommandGroup>
             <CommandList>
-              {options.map((option) => (
+              {options.concat({ label: input, value: input }).map((option) => (
                 <CommandItem
                   key={option.value}
                   value={option.value}

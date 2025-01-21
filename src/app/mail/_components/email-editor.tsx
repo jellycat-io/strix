@@ -47,7 +47,7 @@ interface EmailEditorProps {
   setToValues(value: SelectOption[]): void;
   setCcValues(value: SelectOption[]): void;
   setBccValues(value: SelectOption[]): void;
-  handleSend(value: string): Promise<void>;
+  handleSend(value: string): void;
 }
 
 export function EmailEditor({
@@ -192,7 +192,7 @@ export function EmailEditor({
         <Button
           onClick={async () => {
             editor?.commands.clearContent();
-            await handleSend(value);
+            handleSend(value);
           }}
           disabled={isSending}
         >

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { api, RouterOutputs } from "@/trpc/react";
+import { toast } from "sonner";
 
 import { useThreads } from "@/hooks/use-threads";
 
@@ -36,7 +37,8 @@ function ReplyBoxComponent({ replyDetails }: ReplyBoxComponentProps) {
     replyDetails.bcc.map(toSelectOption),
   );
 
-  const { threadId } = useThreads();
+  const { accountId, threadId } = useThreads();
+  const sendEmail = api.mail.sendEmail.useMutation();
 
   useEffect(() => {
     if (!threadId || !replyDetails) return;
@@ -50,8 +52,35 @@ function ReplyBoxComponent({ replyDetails }: ReplyBoxComponentProps) {
     setBccValues(replyDetails.bcc.map(toSelectOption));
   }, [threadId, replyDetails]);
 
-  async function handleSend(value: string) {
-    console.log(value);
+  function handleSend(value: string) {
+    if (!replyDetails) return;
+
+    sendEmail.mutate(
+      {
+        accountId,
+        email: {
+          threadId: threadId ?? undefined,
+          subject,
+          body: value,
+          from: replyDetails.from,
+          to: replyDetails.to.map(toEmailAddress),
+          cc: replyDetails.cc.map(toEmailAddress),
+          bcc: replyDetails.bcc.map(toEmailAddress),
+          replyTo: replyDetails.from,
+          inReplyTo: replyDetails.id,
+        },
+      },
+
+      {
+        onSuccess: () => {
+          toast.success("Reply sent");
+        },
+        onError: (err) => {
+          console.log(err);
+          toast.error("Error sending reply");
+        },
+      },
+    );
   }
 
   return (
@@ -61,7 +90,7 @@ function ReplyBoxComponent({ replyDetails }: ReplyBoxComponentProps) {
       toValues={toValues}
       ccValues={ccValues}
       bccValues={bccValues}
-      isSending={false}
+      isSending={sendEmail.isPending}
       setSubject={setSubject}
       setToValues={setToValues}
       setCcValues={setCcValues}
@@ -79,4 +108,13 @@ function toSelectOption({
   address: string;
 }) {
   return { label: name ?? address, value: address };
+}
+
+function toEmailAddress(
+  value: RouterOutputs["mail"]["getReplyDetails"]["to"][0],
+) {
+  return {
+    name: value.name ?? "",
+    address: value.address,
+  };
 }

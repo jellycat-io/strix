@@ -3,9 +3,7 @@
 import { auth } from "@clerk/nextjs/server";
 import axios, { isAxiosError } from "axios";
 
-export const getAurinkoAuthUrl = async (
-  serviceType: "Google" | "Office365",
-) => {
+export async function getAurinkoAuthUrl(serviceType: "Google" | "Office365") {
   const { userId } = await auth();
   if (!userId) {
     throw new Error("Unauthorized");
@@ -20,9 +18,9 @@ export const getAurinkoAuthUrl = async (
   });
 
   return `https://api.aurinko.io/v1/auth/authorize?${params.toString()}`;
-};
+}
 
-export const exchangeCodeForAccessToken = async (code: string) => {
+export async function exchangeCodeForAccessToken(code: string) {
   try {
     const res = await axios.post(
       `https://api.aurinko.io/v1/auth/token/${code}`,
@@ -50,9 +48,9 @@ export const exchangeCodeForAccessToken = async (code: string) => {
     }
     console.error("Failed to exchange code for access token:", err);
   }
-};
+}
 
-export const getAccountDetails = async (token: string) => {
+export async function getAccountDetails(token: string) {
   try {
     const res = await axios.get("https://api.aurinko.io/v1/account", {
       headers: {
@@ -72,4 +70,4 @@ export const getAccountDetails = async (token: string) => {
     }
     console.error("Failed to get account details:", err);
   }
-};
+}

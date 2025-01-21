@@ -1,4 +1,9 @@
-import type { EmailMessage, SyncResponse, SyncUpdatedResponse } from "@/types";
+import type {
+  EmailAddress,
+  EmailMessage,
+  SyncResponse,
+  SyncUpdatedResponse,
+} from "@/types";
 import axios, { isAxiosError } from "axios";
 
 export class Account {
@@ -82,6 +87,50 @@ export class Account {
     );
 
     return res.data;
+  }
+
+  async sendEmail(values: {
+    threadId?: string;
+    from: EmailAddress;
+    to: EmailAddress[];
+    cc?: EmailAddress[];
+    bcc?: EmailAddress[];
+    replyTo?: EmailAddress;
+    subject: string;
+    body: string;
+    inReplyTo?: string;
+    references?: string;
+  }) {
+    try {
+      const response = await axios.post(
+        "https://api.aurinko.io/v1/email/messages",
+        {
+          ...values,
+          replyTo: [values.replyTo],
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+          params: {
+            returnIds: true,
+          },
+        },
+      );
+
+      console.log("Email sent", response.data);
+    } catch (err) {
+      if (isAxiosError(err)) {
+        console.error(
+          "Error sending email:",
+          JSON.stringify(err.response?.data, null, 2),
+        );
+      } else {
+        console.error("Error sending email:", err);
+      }
+
+      throw err;
+    }
   }
 
   private async startSync() {
