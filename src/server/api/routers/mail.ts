@@ -100,6 +100,8 @@ export const mailRouter = createTRPCRouter({
         input.accountId,
         ctx.auth.userId,
       );
+      const acc = new Account(account.accessToken);
+      acc.syncEmails().catch(console.error);
 
       let filter: Prisma.ThreadWhereInput = {};
       if (input.tab === "inbox") {
@@ -118,6 +120,13 @@ export const mailRouter = createTRPCRouter({
         where: filter,
         include: {
           emails: {
+            where: {
+              NOT: {
+                sysLabels: {
+                  has: "trash",
+                },
+              },
+            },
             orderBy: {
               sentAt: "asc",
             },
@@ -133,7 +142,6 @@ export const mailRouter = createTRPCRouter({
             },
           },
         },
-        take: 15,
         orderBy: {
           lastMessageDate: "desc",
         },

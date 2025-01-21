@@ -3,6 +3,7 @@ import Link from "next/link";
 // import { LinkAccountButton } from "@/components/link-account-button";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
+import { LinkAccountButton } from "@/components/link-account-button";
 
 export default async function Home() {
   return (
@@ -20,7 +21,7 @@ export default async function Home() {
         </p>
         <div className="flex items-center gap-4">
           <Link href="/mail">
-            <Button>Get Started</Button>
+            <LinkAccountButton />
           </Link>
           <Link href="https://github.com/jellycat-io/strix" target="_blank">
             <Button>

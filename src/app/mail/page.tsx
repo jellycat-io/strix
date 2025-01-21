@@ -2,7 +2,6 @@ import dynamic from "next/dynamic";
 
 import { UserButton } from "@clerk/nextjs";
 
-import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 import { ComposeButton } from "./_components/compose-button";

@@ -24,63 +24,30 @@ import { EmailEditor } from "./email-editor";
 
 export function ComposeButton() {
   const [open, setOpen] = useState(false);
-  const [formState, setFormState] = useState<{
-    subject: string;
-    toValues: SelectOption[];
-    ccValues: SelectOption[];
-    bccValues: SelectOption[];
-  }>({
-    subject: "",
-    toValues: [],
-    ccValues: [],
-    bccValues: [],
-  });
+  const [subject, setSubject] = useState("");
+  const [toValues, setToValues] = useState<SelectOption[]>([]);
+  const [ccValues, setCcValues] = useState<SelectOption[]>([]);
+  const [bccValues, setBccValues] = useState<SelectOption[]>([]);
 
   const { account } = useThreads();
   const sendEmail = api.mail.sendEmail.useMutation();
 
-  function onSubjectChange(value: string) {
-    setFormState({
-      ...formState,
-      subject: value,
-    });
-  }
-
-  function onToValuesChange(values: SelectOption[]) {
-    setFormState({
-      ...formState,
-      toValues: values,
-    });
-  }
-
-  function onCcValuesChange(values: SelectOption[]) {
-    setFormState({
-      ...formState,
-      ccValues: values,
-    });
-  }
-
-  function onBccValuesChange(values: SelectOption[]) {
-    setFormState({
-      ...formState,
-      bccValues: values,
-    });
-  }
-
   function handleSend(value: string) {
     if (!account) return;
+
+    console.log(toValues);
 
     sendEmail.mutate(
       {
         accountId: account.id,
         email: {
           threadId: undefined,
-          subject: formState.subject,
+          subject: subject,
           body: value,
           from: { name: account.name ?? "Me", address: account.email },
-          to: formState.toValues.map(toEmailAddress),
-          cc: formState.ccValues.map(toEmailAddress),
-          bcc: formState.bccValues.map(toEmailAddress),
+          to: toValues.map(toEmailAddress),
+          cc: ccValues.map(toEmailAddress),
+          bcc: bccValues.map(toEmailAddress),
           replyTo: { name: account.name ?? "Me", address: account.email },
           inReplyTo: undefined,
         },
@@ -112,17 +79,17 @@ export function ComposeButton() {
             <DrawerTitle>Compose email</DrawerTitle>
           </DrawerHeader>
           <EmailEditor
-            subject={formState.subject}
-            to={formState.toValues.map((to) => to.value)}
-            toValues={formState.toValues}
-            ccValues={formState.ccValues}
-            bccValues={formState.bccValues}
+            subject={subject}
+            to={toValues.map((to) => to.value)}
+            toValues={toValues}
+            ccValues={ccValues}
+            bccValues={bccValues}
             isDefaultExpanded
             isSending={sendEmail.isPending}
-            setSubject={onSubjectChange}
-            setToValues={onToValuesChange}
-            setCcValues={onCcValuesChange}
-            setBccValues={onBccValuesChange}
+            setSubject={setSubject}
+            setToValues={setToValues}
+            setCcValues={setCcValues}
+            setBccValues={setBccValues}
             handleSend={handleSend}
           />
         </div>

@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 
 import { getInitials } from "@/lib/utils";
+import { useLocalStorage } from "@/hooks/use-local-storage";
 import { useThreads } from "@/hooks/use-threads";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -48,6 +49,7 @@ const tools: Record<string, ThreadTool[]> = {
 export function ThreadDisplay() {
   const { threadId, threads } = useThreads();
   const thread = threads?.find((t) => t.id === threadId);
+  const [tab] = useLocalStorage("strix::tab", "");
 
   return (
     <div className="flex h-full flex-col">
@@ -125,9 +127,13 @@ export function ThreadDisplay() {
               ))}
             </div>
           </div>
-          <div className="flex-1"></div>
-          <Separator className="mt-auto" />
-          <ReplyBox />
+          {tab === "inbox" && (
+            <>
+              <div className="flex-1"></div>
+              <Separator className="mt-auto" />
+              <ReplyBox />
+            </>
+          )}
         </div>
       ) : (
         <div className="flex h-full w-full items-center justify-center text-muted-foreground">

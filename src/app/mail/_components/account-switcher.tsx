@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+
 import { api } from "@/trpc/react";
 import { PlusIcon } from "lucide-react";
 
@@ -17,11 +19,21 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 interface AccountSwitcherProps {
   isCollapsed: boolean;
+  defaultAccountId: string | null;
 }
 
-export function AccountSwitcher({ isCollapsed }: AccountSwitcherProps) {
+export function AccountSwitcher({
+  isCollapsed,
+  defaultAccountId,
+}: AccountSwitcherProps) {
   const { data: accounts } = api.mail.getAccounts.useQuery();
   const [accountId, setAccountId] = useLocalStorage("strix::accountId", "");
+
+  useEffect(() => {
+    if (!accountId || accountId !== defaultAccountId) {
+      setAccountId(defaultAccountId ?? "");
+    }
+  }, []);
 
   if (!accounts) return <Skeleton className="h-9 w-full" />;
 

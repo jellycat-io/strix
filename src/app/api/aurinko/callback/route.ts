@@ -72,5 +72,7 @@ export const GET = async (req: NextRequest) => {
       .catch((err) => console.error("Failed to trigger initial sync:", err)),
   );
 
-  return NextResponse.redirect(new URL("/mail", req.url));
+  return NextResponse.redirect(
+    new URL(`/mail?accountId=${token.accountId}`, req.url),
+  );
 };

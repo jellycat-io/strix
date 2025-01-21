@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useParams, useSearchParams } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import {
@@ -28,6 +29,7 @@ export function MailDashboard({
   defaultCollapsed = false,
 }: MailProps) {
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
+  const params = useSearchParams();
 
   return (
     <ResizablePanelGroup
@@ -57,7 +59,10 @@ export function MailDashboard({
       >
         <div className="flex h-full flex-1 flex-col">
           <div className={cn("flex h-[52px] items-center justify-center px-2")}>
-            <AccountSwitcher isCollapsed={isCollapsed} />
+            <AccountSwitcher
+              defaultAccountId={params.get("accountId")}
+              isCollapsed={isCollapsed}
+            />
           </div>
           <Separator />
           {/* Sidebar */}

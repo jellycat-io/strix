@@ -40,14 +40,8 @@ export function MultiSelect({
   value: defaultValue,
 }: MultiSelectProps) {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState<SelectOption[]>([]);
+  const [value, setValue] = useState<SelectOption[]>(defaultValue);
   const [input, setInput] = useState("");
-
-  useEffect(() => {
-    if (value !== defaultValue) {
-      setValue(defaultValue);
-    }
-  }, [defaultValue]);
 
   function handleSetValue(val: SelectOption) {
     if (value.includes(val)) {
@@ -62,6 +56,7 @@ export function MultiSelect({
 
   function handleRemoveFromValue(option: SelectOption) {
     setValue((prev) => prev.filter((i) => i.value !== option.value));
+    onChangeAction(value);
   }
 
   return (

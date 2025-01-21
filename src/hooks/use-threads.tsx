@@ -30,7 +30,7 @@ export function useThreads() {
     {
       enabled: !!accountId && !!tab,
       placeholderData: (e) => e,
-      // refetchInterval: 5000
+      refetchInterval: 60000,
     },
   );
 
